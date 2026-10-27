@@ -90,13 +90,10 @@
     background: var(--bg-2);
     color: var(--ink-soft);
     font-size: 1rem;
-    cursor: pointer;
-    border: 0;
-    font-family: inherit;
   }
   .no-photo .placeholder { display: flex !important; }
   .no-photo img { display: none; }
-  .placeholder span { font-size: 2.5rem; }
+  .placeholder span { font-size: 5rem; }
 
   h1 {
     font-family: "Aref Ruqaa", "Amiri", serif;
@@ -164,11 +161,9 @@
   <div class="arch" id="arch">
     <div class="arch-inner">
       <img src="mama.jpg" alt="صورة ماما" id="photo">
-      <button class="placeholder" id="pick" type="button">
-        <span>📷</span>
-        اضغط واختار صورة ماما
-      </button>
-      <input type="file" id="file" accept="image/*" hidden>
+      <div class="placeholder" aria-hidden="true">
+        <span>💐</span>
+      </div>
     </div>
   </div>
 
@@ -183,20 +178,11 @@
 </main>
 
 <script>
-  // Photo: uses mama.jpg next to this file; if missing, lets you pick one.
+  // Photo: shows mama.jpg (same folder); until it's uploaded, a flower placeholder shows instead.
   const arch = document.getElementById('arch');
   const photo = document.getElementById('photo');
-  const fileInput = document.getElementById('file');
   photo.addEventListener('error', () => arch.classList.add('no-photo'));
   if (photo.complete && photo.naturalWidth === 0) arch.classList.add('no-photo');
-  document.getElementById('pick').addEventListener('click', () => fileInput.click());
-  fileInput.addEventListener('change', e => {
-    const f = e.target.files[0];
-    if (!f) return;
-    photo.src = URL.createObjectURL(f);
-    arch.classList.remove('no-photo');
-    burst();
-  });
 
   // Confetti
   const canvas = document.getElementById('confetti');
