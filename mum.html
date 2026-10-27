@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>كل سنة وانتي طيبة يا ماما</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFF6EE;
+    --bg-2: #FDE3D6;
+    --ink: #3B1730;
+    --ink-soft: #7A4A63;
+    --rose: #E2557A;
+    --saffron: #F2A93B;
+    --mint: #3FB39A;
+    --frame: #FFFFFF;
+    color-scheme: light;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #23101E;
+      --bg-2: #3A1A31;
+      --ink: #FCEBDD;
+      --ink-soft: #D9B3C4;
+      --rose: #FF7A9C;
+      --saffron: #FFC260;
+      --mint: #5ED6BB;
+      --frame: #4A2340;
+      color-scheme: dark;
+    }
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    background:
+      radial-gradient(ellipse at 50% 0%, var(--bg-2), transparent 65%),
+      var(--bg);
+    color: var(--ink);
+    font-family: "Tajawal", "Segoe UI", Tahoma, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow-x: hidden;
+  }
+  canvas#confetti {
+    position: fixed; inset: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 5;
+  }
+  main {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 30rem;
+    padding: 2rem 1.5rem 2.5rem;
+    text-align: center;
+  }
+  .arch {
+    position: relative;
+    width: min(72vw, 17rem);
+    aspect-ratio: 3 / 4;
+    margin: 0 auto;
+    border-radius: 50% 50% 1.25rem 1.25rem / 38% 38% 1.25rem 1.25rem;
+    padding: 0.6rem;
+    background: conic-gradient(from 200deg, var(--rose), var(--saffron), var(--mint), var(--rose));
+  }
+  .arch-inner {
+    width: 100%; height: 100%;
+    border-radius: inherit;
+    background: var(--frame);
+    padding: 0.4rem;
+  }
+  .arch img, .arch .placeholder {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 50% 50% 0.9rem 0.9rem / 38% 38% 0.9rem 0.9rem;
+    display: block;
+  }
+  .placeholder {
+    display: none !important;
+    align-items: center; justify-content: center;
+    flex-direction: column; gap: 0.5rem;
+    background: var(--bg-2);
+    color: var(--ink-soft);
+    font-size: 1rem;
+    cursor: pointer;
+    border: 0;
+    font-family: inherit;
+  }
+  .no-photo .placeholder { display: flex !important; }
+  .no-photo img { display: none; }
+  .placeholder span { font-size: 2.5rem; }
+
+  h1 {
+    font-family: "Aref Ruqaa", "Amiri", serif;
+    font-weight: 700;
+    font-size: clamp(2.6rem, 11vw, 3.6rem);
+    line-height: 1.25;
+    margin: 1.5rem 0 0.5rem;
+    color: var(--rose);
+  }
+  p.msg {
+    font-size: 1.15rem;
+    line-height: 1.9;
+    color: var(--ink);
+    margin: 0 auto 1.75rem;
+    max-width: 24rem;
+  }
+  p.sign {
+    font-family: "Aref Ruqaa", serif;
+    font-size: 1.4rem;
+    color: var(--ink-soft);
+    margin: 0 0 1.75rem;
+  }
+  button.joy {
+    font-family: inherit;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    background: var(--rose);
+    border: 0;
+    border-radius: 999px;
+    padding: 0.85rem 2rem;
+    cursor: pointer;
+    box-shadow: 0 6px 0 color-mix(in srgb, var(--rose) 60%, #000);
+    transition: transform .1s, box-shadow .1s;
+  }
+  button.joy:active { transform: translateY(4px); box-shadow: 0 2px 0 color-mix(in srgb, var(--rose) 60%, #000); }
+  button:focus-visible { outline: 3px solid var(--saffron); outline-offset: 4px; }
+
+  .balloon {
+    position: fixed; bottom: -8rem; z-index: 1;
+    font-size: 3rem;
+    animation: rise 14s linear infinite;
+    opacity: .85;
+  }
+  .balloon:nth-child(2) { right: 8%;  animation-delay: 0s; }
+  .balloon:nth-child(3) { right: 78%; animation-delay: 4s; font-size: 2.4rem; }
+  .balloon:nth-child(4) { right: 45%; animation-delay: 9s; font-size: 2rem; }
+  @keyframes rise {
+    0%   { transform: translateY(0) rotate(-6deg); }
+    50%  { transform: translateY(-60vh) rotate(6deg); }
+    100% { transform: translateY(-125vh) rotate(-6deg); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .balloon { display: none; }
+  }
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<div class="balloon" aria-hidden="true">🎈</div>
+<div class="balloon" aria-hidden="true">🎈</div>
+<div class="balloon" aria-hidden="true">🎈</div>
+
+<main>
+  <div class="arch" id="arch">
+    <div class="arch-inner">
+      <img src="mama.jpg" alt="صورة ماما" id="photo">
+      <button class="placeholder" id="pick" type="button">
+        <span>📷</span>
+        اضغط واختار صورة ماما
+      </button>
+      <input type="file" id="file" accept="image/*" hidden>
+    </div>
+  </div>
+
+  <h1>كل سنة وانتي طيبة يا ماما</h1>
+  <p class="msg">
+    يا أحلى ست في الدنيا، ربنا يخليكي لينا ويديكي الصحة وطولة العمر.
+    كل حاجة حلوة فيّا هي منك، وكل يوم معاكي هو عيد.
+  </p>
+  <p class="sign">بحبك قوي ❤️</p>
+
+  <button class="joy" id="joy" type="button">🎉 زوّدي البهجة</button>
+</main>
+
+<script>
+  // Photo: uses mama.jpg next to this file; if missing, lets you pick one.
+  const arch = document.getElementById('arch');
+  const photo = document.getElementById('photo');
+  const fileInput = document.getElementById('file');
+  photo.addEventListener('error', () => arch.classList.add('no-photo'));
+  if (photo.complete && photo.naturalWidth === 0) arch.classList.add('no-photo');
+  document.getElementById('pick').addEventListener('click', () => fileInput.click());
+  fileInput.addEventListener('change', e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    photo.src = URL.createObjectURL(f);
+    arch.classList.remove('no-photo');
+    burst();
+  });
+
+  // Confetti
+  const canvas = document.getElementById('confetti');
+  const ctx = canvas.getContext('2d');
+  const colors = ['#E2557A', '#F2A93B', '#3FB39A', '#8C5BD8', '#FFD447', '#4FA3F7'];
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let pieces = [];
+  let running = false;
+
+  function resize() {
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = innerWidth * dpr;
+    canvas.height = innerHeight * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  addEventListener('resize', resize);
+  resize();
+
+  function burst(count = reduce ? 40 : 180) {
+    for (let i = 0; i < count; i++) {
+      const fromLeft = i % 2 === 0;
+      pieces.push({
+        x: fromLeft ? 0 : innerWidth,
+        y: innerHeight * 0.7,
+        vx: (fromLeft ? 1 : -1) * (4 + Math.random() * 9),
+        vy: -(9 + Math.random() * 11),
+        w: 6 + Math.random() * 6,
+        h: 8 + Math.random() * 10,
+        rot: Math.random() * Math.PI,
+        vr: (Math.random() - 0.5) * 0.3,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        round: Math.random() < 0.3,
+        life: 0
+      });
+    }
+    if (!running) { running = true; requestAnimationFrame(tick); }
+  }
+
+  function tick() {
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    pieces.forEach(p => {
+      p.vy += 0.28;
+      p.vx *= 0.985;
+      p.vy *= 0.985;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.vr;
+      p.life++;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.fillStyle = p.color;
+      if (p.round) {
+        ctx.beginPath(); ctx.arc(0, 0, p.w / 2, 0, Math.PI * 2); ctx.fill();
+      } else {
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h * Math.abs(Math.cos(p.rot)));
+      }
+      ctx.restore();
+    });
+    pieces = pieces.filter(p => p.y < innerHeight + 40 && p.life < 600);
+    if (pieces.length) requestAnimationFrame(tick);
+    else { running = false; ctx.clearRect(0, 0, innerWidth, innerHeight); }
+  }
+
+  document.getElementById('joy').addEventListener('click', () => burst());
+  addEventListener('load', () => {
+    burst();
+    if (!reduce) setTimeout(() => burst(120), 900);
+  });
+</script>
+</body>
+</html>
